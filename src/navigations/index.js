@@ -1,10 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
-import MainNav from './MainNavigations'
+import { View } from 'react-native';
+
+import AuthNav from './AuthNavigations';
 
 export default () => {
-    return (
-    <NavigationContainer>
-        <MainNav />
-    </NavigationContainer>
-    )
-}
+  return (
+    <View style={{ flex: 1 }}>
+      <NavigationContainer>
+        <AuthNav />
+      </NavigationContainer>
+    </View>
+  );
+};
