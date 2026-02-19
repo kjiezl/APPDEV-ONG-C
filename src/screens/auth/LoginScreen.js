@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
+import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { ROUTES } from '../../utils';
 
@@ -38,8 +39,14 @@ const LoginScreen = () => {
         }}
       />
 
-      <TouchableOpacity
-        style={{ margin: 10 }}
+      <CustomButton
+        label={'Login'}
+        containerStyle={{
+          width: '80%',
+        }}
+        textStyle={{
+          textAlign: 'center',
+        }}
         onPress={() => {
           if (emailAdd !== 'qwe' || password !== 'qwe') {
             Alert.alert('Incorrect credentials', 'Please try again');
@@ -47,11 +54,7 @@ const LoginScreen = () => {
           }
           navigation.navigate(ROUTES.HOME);
         }}
-      >
-        <View style={{ paddingVertical: 15, paddingHorizontal: 30, backgroundColor: 'blue', borderRadius: 50 }}>
-          <Text style={{ color: 'white', fontSize: 15 }}>Login</Text>
-        </View>
-      </TouchableOpacity>
+      />
     </View>
   );
 };

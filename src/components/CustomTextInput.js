@@ -10,7 +10,7 @@ const CustomTextInput = ({
 }) => {
   return (
     <View style={containerStyle}>
-      <Text>{label}</Text>
+      <Text style={{ color: '#555' }}>{label}</Text>
       <TextInput
         placeholder={placeholder}
         onChangeText={value}
@@ -19,7 +19,7 @@ const CustomTextInput = ({
           {
             borderWidth: 1,
             borderBottomWidth: 1,
-            borderRadius: 50,
+            borderRadius: 30,
             borderColor: '#ccc',
             paddingHorizontal: 20,
             width: '100%',
