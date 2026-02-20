@@ -4,7 +4,7 @@ const CustomButton = ({ containerStyle, textStyle, label, onPress }) => {
   return (
     <View style={containerStyle}>
       <TouchableOpacity style={{ margin: 10 }} onPress={onPress}>
-        <View style={{ padding: 12, backgroundColor: '#fc7fc4ff', borderRadius: 30 }}>
+        <View style={{ padding: 13, backgroundColor: '#fc7fc4ff', borderRadius: 30 }}>
           <Text style={[textStyle, { color: 'white', fontSize: 15, fontWeight: 'bold' }]}>
             {label}
           </Text>

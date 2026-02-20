@@ -10,8 +10,8 @@ import { ROUTES } from '../utils';
 const AuthNav = () => {
   return (
     <Stack.Navigator initialRouteName={ROUTES.LOGIN}>
-      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-      <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />
+      <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={ROUTES.HOME} component={HomeScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
