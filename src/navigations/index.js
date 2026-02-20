@@ -9,7 +9,7 @@ export default () => {
     StatusBar.setBarStyle('dark-content', true);
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View className='flex-1'>
       <NavigationContainer>
         <AuthNav />
       </NavigationContainer>

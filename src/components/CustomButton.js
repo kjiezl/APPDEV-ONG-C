@@ -1,11 +1,11 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 
-const CustomButton = ({ containerStyle, textStyle, label, onPress }) => {
+const CustomButton = ({ containerStyle, label, onPress, textStyle }) => {
   return (
-    <View style={containerStyle}>
-      <TouchableOpacity style={{ margin: 10 }} onPress={onPress}>
-        <View style={{ padding: 13, backgroundColor: '#fc7fc4ff', borderRadius: 30 }}>
-          <Text style={[textStyle, { color: 'white', fontSize: 15, fontWeight: 'bold' }]}>
+    <View className={`${containerStyle}`}>
+      <TouchableOpacity className='m-10' onPress={onPress}>
+        <View className='p-4 bg-[#fc7fc4ff] rounded-full'>
+          <Text className={`text-white text-[15px] font-bold text-center ${textStyle}`}>
             {label}
           </Text>
         </View>
