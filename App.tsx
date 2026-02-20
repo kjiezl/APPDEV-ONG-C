@@ -4,7 +4,7 @@ import Nav from './src/navigations'
 
 const App = () => {
   return (
-    <View style={{flex: 1}}>
+    <View className='flex-1'>
       <Nav />
     </View>
   );

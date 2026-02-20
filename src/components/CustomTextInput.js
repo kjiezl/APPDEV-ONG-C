@@ -9,23 +9,12 @@ const CustomTextInput = ({
   containerStyle,
 }) => {
   return (
-    <View style={containerStyle}>
-      <Text style={{ color: '#555' }}>{label}</Text>
+    <View className={`${containerStyle}`}>
+      <Text className='color-[#555]'>{label}</Text>
       <TextInput
         placeholder={placeholder}
         onChangeText={value}
-        style={[
-          textStyle,
-          {
-            borderWidth: 1,
-            borderBottomWidth: 1,
-            borderRadius: 30,
-            borderColor: '#ccc',
-            paddingHorizontal: 20,
-            width: '100%',
-            marginTop: 10,
-          },
-        ]}
+        className={`border border-[#ccc] rounded-full px-5 mt-2.5 w-full ${textStyle}`}
       />
     </View>
   );
