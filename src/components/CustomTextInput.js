@@ -14,7 +14,7 @@ const CustomTextInput = ({
       <TextInput
         placeholder={placeholder}
         onChangeText={value}
-        className={`border border-[#ccc] rounded-full px-5 mt-2.5 w-full ${textStyle}`}
+        className={`border border-[#ccc] rounded-lg px-5 mt-2.5 w-full ${textStyle}`}
       />
     </View>
   );
