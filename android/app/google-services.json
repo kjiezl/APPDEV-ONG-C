@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "433662515048",
+    "project_id": "qwepic-8136f",
+    "storage_bucket": "qwepic-8136f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433662515048:android:bb7e6d12109e8eafa2e8dd",
+        "android_client_info": {
+          "package_name": "com.ong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7oogiRdm9DtX6RI5NaOznJ_mb0sw-tx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
