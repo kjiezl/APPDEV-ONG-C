@@ -5,6 +5,7 @@ const Stack = createStackNavigator();
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import HomeScreen from '../screens/main/HomeScreen';
+import ProfileScreen from '../screens/main/ProfileScreen';
 
 import { ROUTES } from '../utils';
 
@@ -14,6 +15,7 @@ const AuthNav = () => {
       <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name={ROUTES.REGISTER} component={RegisterScreen} options={{ headerShown: false }} />
       <Stack.Screen name={ROUTES.HOME} component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={ROUTES.PROFILE} component={ProfileScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

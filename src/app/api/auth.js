@@ -51,3 +51,28 @@ export async function getAuthToken() {
 export async function logout() {
     await AsyncStorage.removeItem('authToken');
 }
+
+export async function getProfile() {
+    const token = await AsyncStorage.getItem('authToken');
+    
+    if (!token) {
+        throw new Error('Not authenticated');
+    }
+
+    const response = await fetch(`${BASE_URL}/auth/profile`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch profile');
+    }
+
+    return data;
+}

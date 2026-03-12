@@ -63,12 +63,15 @@ const LoginScreen = () => {
       </Text>
 
       <CustomButton
-        label={loading ? '' : 'Login'}
         containerStyle="w-4/5"
         onPress={handleLogin}
         disabled={loading}
       >
-        {loading && <ActivityIndicator color="#fff" />}
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text className="text-white text-[15px] font-bold text-center">Login</Text>
+        )}
       </CustomButton>
 
       <Text className="text-[13px] text-[#666] mt-2.5">
