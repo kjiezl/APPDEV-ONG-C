@@ -1,0 +1,28 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // User files
+    match /users/{userId}/{allPaths=**} {
+      // Public images - readable by anyone, writable only by owner
+      match /public/{allPublicPaths=**} {
+        allow read: if true;
+        allow write: if isAuthenticated() && isOwner(userId);
+      }
+      
+      // Private images - readable and writable only by owner
+      match /private/{allPrivatePaths=**} {
+        allow read, write: if isAuthenticated() && isOwner(userId);
+      }
+    }
+  }
+}
