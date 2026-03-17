@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ActivityIndicator, Alert, Image, Pressable, Text, View } from 'react-native';
-import { register } from '../../app/api/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerRequest } from '../../app/actions';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { ROUTES } from '../../utils';
@@ -12,11 +13,28 @@ const RegisterScreen = () => {
   const [emailAdd, setEmailAdd] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { user, loading, error } = useSelector(state => state.auth);
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    if (isSubmitting && user) {
+      Alert.alert('Success', 'Account created successfully!');
+      setIsSubmitting(false);
+      navigation.navigate(ROUTES.LOGIN);
+    }
+  }, [user, navigation, isSubmitting]);
+
+  useEffect(() => {
+    if (isSubmitting && error) {
+      Alert.alert('Registration failed', error);
+      setIsSubmitting(false);
+    }
+  }, [error, isSubmitting]);
+
+  const handleRegister = () => {
     if (!username || !accountType || !emailAdd || !password || !confirmPassword) {
       Alert.alert('Missing fields', 'Please fill in all required information.');
       return;
@@ -27,16 +45,8 @@ const RegisterScreen = () => {
       return;
     }
 
-    setLoading(true);
-    try {
-      await register(username, emailAdd, password, accountType);
-      Alert.alert('Success', 'Account created successfully!');
-      navigation.navigate(ROUTES.LOGIN);
-    } catch (error) {
-      Alert.alert('Registration failed', error.message || 'Please try again');
-    } finally {
-      setLoading(false);
-    }
+    setIsSubmitting(true);
+    dispatch(registerRequest(username, emailAdd, password, accountType));
   };
 
   return (
@@ -113,12 +123,15 @@ const RegisterScreen = () => {
       />
 
       <CustomButton
-        label={loading ? '' : 'Sign Up'}
         containerStyle="w-4/5"
         onPress={handleRegister}
         disabled={loading}
       >
-        {loading && <ActivityIndicator color="#fff" />}
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text className="text-white text-[15px] font-bold text-center">Sign Up</Text>
+        )}
       </CustomButton>
 
       <Text className="text-[13px] text-[#666] mt-2.5">

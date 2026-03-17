@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ActivityIndicator, Alert, Image, Text, View } from 'react-native';
-import { login } from '../../app/api/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRequest } from '../../app/actions';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { ROUTES } from '../../utils';
@@ -9,25 +10,34 @@ import { ROUTES } from '../../utils';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { user, loading, error } = useSelector(state => state.auth);
 
-  const handleLogin = async () => {
+  useEffect(() => {
+    if (isSubmitting && user) {
+      setIsSubmitting(false);
+      navigation.navigate(ROUTES.HOME);
+    }
+  }, [user, navigation, isSubmitting]);
+
+  useEffect(() => {
+    if (isSubmitting && error) {
+      Alert.alert('Login failed', error);
+      setIsSubmitting(false);
+    }
+  }, [error, isSubmitting]);
+
+  const handleLogin = () => {
     if (!username || !password) {
       Alert.alert('Missing fields', 'Please enter username and password');
       return;
     }
 
-    setLoading(true);
-    try {
-      await login(username, password);
-      navigation.navigate(ROUTES.HOME);
-    } catch (error) {
-      Alert.alert('Login failed', error.message || 'Please check your credentials');
-    } finally {
-      setLoading(false);
-    }
+    setIsSubmitting(true);
+    dispatch(loginRequest(username, password));
   };
 
   return (

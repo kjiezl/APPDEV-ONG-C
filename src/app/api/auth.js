@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.254.120:8000/api';
+const BASE_URL = 'http://192.168.223.186:8000/api';
 
 export async function login(username, password) {
     const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -19,6 +19,7 @@ export async function login(username, password) {
     }
 
     if (data.token) {
+        console.log('token:', data.token);
         await AsyncStorage.setItem('authToken', data.token);
     }
 
@@ -39,6 +40,11 @@ export async function register(username, email, password, accountType) {
 
     if (!response.ok) {
         throw new Error(data.message || 'Registration failed');
+    }
+
+    if (data.token) {
+        console.log('token:', data.token);
+        await AsyncStorage.setItem('authToken', data.token);
     }
 
     return data;

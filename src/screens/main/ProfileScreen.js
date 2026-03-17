@@ -1,37 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { getProfile, logout } from '../../app/api/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutRequest, getProfileRequest } from '../../app/actions';
 import { ROUTES } from '../../utils';
 
 const ProfileScreen = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { user, loading } = useSelector(state => state.auth);
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    dispatch(getProfileRequest());
+  }, [dispatch]);
 
-  const fetchProfile = async () => {
-    try {
-      const data = await getProfile();
-      setUser(data);
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogout = async () => {
+  const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Logout',
         style: 'destructive',
-        onPress: async () => {
-          await logout();
+        onPress: () => {
+          dispatch(logoutRequest());
           navigation.reset({
             index: 0,
             routes: [{ name: ROUTES.LOGIN }],
