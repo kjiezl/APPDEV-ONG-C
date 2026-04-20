@@ -23,7 +23,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri(project(":react-native-async-storage_async-storage").file("local_repo")) }
     }
 }
 

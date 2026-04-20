@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const BASE_URL = 'http://192.168.223.186:8000/api';
+
+let authToken = null;
 
 export async function login(username, password) {
     const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -20,7 +20,7 @@ export async function login(username, password) {
 
     if (data.token) {
         console.log('token:', data.token);
-        await AsyncStorage.setItem('authToken', data.token);
+        authToken = data.token;
     }
 
     return data;
@@ -44,24 +44,22 @@ export async function register(username, email, password, accountType) {
 
     if (data.token) {
         console.log('token:', data.token);
-        await AsyncStorage.setItem('authToken', data.token);
+        authToken = data.token;
     }
 
     return data;
 }
 
 export async function getAuthToken() {
-    return await AsyncStorage.getItem('authToken');
+    return authToken;
 }
 
 export async function logout() {
-    await AsyncStorage.removeItem('authToken');
+    authToken = null;
 }
 
 export async function getProfile() {
-    const token = await AsyncStorage.getItem('authToken');
-    
-    if (!token) {
+    if (!authToken) {
         throw new Error('Not authenticated');
     }
 
@@ -70,7 +68,7 @@ export async function getProfile() {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authToken}`,
         },
     });
 
