@@ -32,6 +32,21 @@ export const registerFailure = (error) => ({
   payload: error,
 });
 
+// Google Login
+export const googleLoginRequest = () => ({
+  type: types.GOOGLE_LOGIN_REQUEST,
+});
+
+export const googleLoginSuccess = (user) => ({
+  type: types.GOOGLE_LOGIN_SUCCESS,
+  payload: user,
+});
+
+export const googleLoginFailure = (error) => ({
+  type: types.GOOGLE_LOGIN_FAILURE,
+  payload: error,
+});
+
 // Logout
 export const logoutRequest = () => ({
   type: types.LOGOUT_REQUEST,

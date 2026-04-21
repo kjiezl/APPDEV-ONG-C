@@ -5,10 +5,13 @@ import {
   loginFailure,
   registerSuccess,
   registerFailure,
+  googleLoginSuccess,
+  googleLoginFailure,
   logoutSuccess,
   getProfileSuccess,
   getProfileFailure,
 } from '../actions/authActions';
+import { signInWithGoogle } from '../../services/firebase';
 import * as authApi from '../api/auth';
 
 function* handleLogin(action) {
@@ -28,6 +31,21 @@ function* handleRegister(action) {
     yield put(registerSuccess(response));
   } catch (error) {
     yield put(registerFailure(error.message));
+  }
+}
+
+function* handleGoogleLogin() {
+  try {
+    const { user, idToken } = yield call(signInWithGoogle);
+    const response = yield call(
+      authApi.googleLogin,
+      idToken,
+      user.email,
+      user.displayName,
+    );
+    yield put(googleLoginSuccess(response));
+  } catch (error) {
+    yield put(googleLoginFailure(error.message));
   }
 }
 
@@ -52,6 +70,7 @@ function* handleGetProfile() {
 export default function* authSaga() {
   yield takeLatest(types.LOGIN_REQUEST, handleLogin);
   yield takeLatest(types.REGISTER_REQUEST, handleRegister);
+  yield takeLatest(types.GOOGLE_LOGIN_REQUEST, handleGoogleLogin);
   yield takeLatest(types.LOGOUT_REQUEST, handleLogout);
   yield takeLatest(types.GET_PROFILE_REQUEST, handleGetProfile);
 }

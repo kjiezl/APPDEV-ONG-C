@@ -11,6 +11,7 @@ const authReducer = (state = initialState, action) => {
     // Login
     case types.LOGIN_REQUEST:
     case types.REGISTER_REQUEST:
+    case types.GOOGLE_LOGIN_REQUEST:
     case types.GET_PROFILE_REQUEST:
       return {
         ...state,
@@ -19,6 +20,7 @@ const authReducer = (state = initialState, action) => {
       };
     case types.LOGIN_SUCCESS:
     case types.REGISTER_SUCCESS:
+    case types.GOOGLE_LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -27,6 +29,7 @@ const authReducer = (state = initialState, action) => {
       };
     case types.LOGIN_FAILURE:
     case types.REGISTER_FAILURE:
+    case types.GOOGLE_LOGIN_FAILURE:
     case types.GET_PROFILE_FAILURE:
       return {
         ...state,

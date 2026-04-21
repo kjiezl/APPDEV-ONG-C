@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { ActivityIndicator, Alert, Image, Pressable, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerRequest } from '../../app/actions';
+import { registerRequest, googleLoginRequest } from '../../app/actions';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { ROUTES } from '../../utils';
@@ -33,6 +33,11 @@ const RegisterScreen = () => {
       setIsSubmitting(false);
     }
   }, [error, isSubmitting]);
+
+  const handleGoogleSignUp = () => {
+    setIsSubmitting(true);
+    dispatch(googleLoginRequest());
+  };
 
   const handleRegister = () => {
     if (!username || !accountType || !emailAdd || !password || !confirmPassword) {
@@ -132,6 +137,23 @@ const RegisterScreen = () => {
         ) : (
           <Text className="text-white text-[15px] font-bold text-center">Sign Up</Text>
         )}
+      </CustomButton>
+
+      <View className="flex-row items-center w-4/5 my-4">
+        <View className="flex-1 h-px bg-[#ccc]" />
+        <Text className="mx-3 text-[13px] text-[#666]">OR</Text>
+        <View className="flex-1 h-px bg-[#ccc]" />
+      </View>
+
+      <CustomButton
+        containerStyle="w-4/5"
+        buttonStyle="bg-white border border-[#ccc]"
+        onPress={handleGoogleSignUp}
+        disabled={loading}
+      >
+        <Text className="text-[#333] text-[15px] font-bold text-center">
+          Sign up with Google
+        </Text>
       </CustomButton>
 
       <Text className="text-[13px] text-[#666] mt-2.5">
