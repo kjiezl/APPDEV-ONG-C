@@ -11,30 +11,30 @@ import {
   getProfileSuccess,
   getProfileFailure,
 } from '../actions/authActions';
-import { signInWithGoogle } from '../../services/firebase';
+import { signInWithGoogle } from '../../services/firebase/googleAuth';
 import * as authApi from '../api/auth';
 
-function* handleLogin(action) {
+function* handleLogin(action: any): Generator<any, void, any> {
   try {
     const {username, password} = action.payload;
     const response = yield call(authApi.login, username, password);
     yield put(loginSuccess(response));
-  } catch (error) {
+  } catch (error: any) {
     yield put(loginFailure(error.message));
   }
 }
 
-function* handleRegister(action) {
+function* handleRegister(action: any): Generator<any, void, any> {
   try {
     const {username, email, password, accountType} = action.payload;
     const response = yield call(authApi.register, username, email, password, accountType);
     yield put(registerSuccess(response));
-  } catch (error) {
+  } catch (error: any) {
     yield put(registerFailure(error.message));
   }
 }
 
-function* handleGoogleLogin() {
+function* handleGoogleLogin(): Generator<any, void, any> {
   try {
     const { user, idToken } = yield call(signInWithGoogle);
     const response = yield call(
@@ -44,30 +44,30 @@ function* handleGoogleLogin() {
       user.displayName,
     );
     yield put(googleLoginSuccess(response));
-  } catch (error) {
+  } catch (error: any) {
     yield put(googleLoginFailure(error.message));
   }
 }
 
-function* handleLogout() {
+function* handleLogout(): Generator<any, void, any> {
   try {
     yield call(authApi.logout);
     yield put(logoutSuccess());
-  } catch (error) {
+  } catch (error: any) {
     console.log('Logout error:', error);
   }
 }
 
-function* handleGetProfile() {
+function* handleGetProfile(): Generator<any, void, any> {
   try {
     const response = yield call(authApi.getProfile);
     yield put(getProfileSuccess(response));
-  } catch (error) {
+  } catch (error: any) {
     yield put(getProfileFailure(error.message));
   }
 }
 
-export default function* authSaga() {
+export default function* authSaga(): Generator<any, void, any> {
   yield takeLatest(types.LOGIN_REQUEST, handleLogin);
   yield takeLatest(types.REGISTER_REQUEST, handleRegister);
   yield takeLatest(types.GOOGLE_LOGIN_REQUEST, handleGoogleLogin);

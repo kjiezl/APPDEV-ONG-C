@@ -3,13 +3,19 @@
   "compilerOptions": {
     "types": [
       "jest"
-    ]
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "jsx": "react-native"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "App.js",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "src/types/**/*.d.ts"
   ],
   "exclude": [
     "**/node_modules",

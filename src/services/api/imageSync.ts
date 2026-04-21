@@ -1,6 +1,21 @@
 const BASE_URL = 'http://192.168.148.187:8000/api';
 
-function getAuthHeaders(token) {
+interface ImageData {
+    storagePath: string;
+    downloadUrl: string | null;
+    fileName: string;
+    isPrivate: boolean;
+    albumId: string | null;
+    uploadedAt: string;
+}
+
+interface AlbumData {
+    name: string;
+    description?: string;
+    isPrivate?: boolean;
+}
+
+function getAuthHeaders(token: string | null): Record<string, string> {
     return {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -8,7 +23,7 @@ function getAuthHeaders(token) {
     };
 }
 
-export async function syncImageToSymfony(imageData, token = null) {
+export async function syncImageToSymfony(imageData: ImageData, token: string | null = null): Promise<any> {
     const {
         storagePath,
         downloadUrl,
@@ -42,7 +57,7 @@ export async function syncImageToSymfony(imageData, token = null) {
     return data;
 }
 
-export async function syncMultipleImagesToSymfony(imagesData, token = null) {
+export async function syncMultipleImagesToSymfony(imagesData: ImageData[], token: string | null = null): Promise<any> {
     const headers = getAuthHeaders(token);
 
     const images = imagesData.map((img) => ({
@@ -69,7 +84,7 @@ export async function syncMultipleImagesToSymfony(imagesData, token = null) {
     return data;
 }
 
-export async function createAlbum(albumData, token = null) {
+export async function createAlbum(albumData: AlbumData, token: string | null = null): Promise<any> {
     const { name, description, isPrivate = false } = albumData;
 
     const headers = getAuthHeaders(token);
@@ -93,7 +108,7 @@ export async function createAlbum(albumData, token = null) {
     return data;
 }
 
-export async function deleteImageFromSymfony(imageId, token = null) {
+export async function deleteImageFromSymfony(imageId: string, token: string | null = null): Promise<{ deleted: boolean }> {
     const headers = getAuthHeaders(token);
 
     const response = await fetch(`${BASE_URL}/images/${imageId}`, {
@@ -109,7 +124,7 @@ export async function deleteImageFromSymfony(imageId, token = null) {
     return { deleted: true };
 }
 
-export async function updateImagePrivacy(imageId, isPrivate, token = null) {
+export async function updateImagePrivacy(imageId: string, isPrivate: boolean, token: string | null = null): Promise<any> {
     const headers = getAuthHeaders(token);
 
     const response = await fetch(`${BASE_URL}/images/${imageId}/privacy`, {

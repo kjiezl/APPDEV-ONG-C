@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { uploadAndSyncImage, uploadAndSyncMultipleImages } from '../services/firebase';
 
+interface UploadOptions {
+    isPrivate?: boolean;
+    albumId?: string | null;
+    fileName?: string | null;
+}
+
 export function useImageUpload() {
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const upload = async (localUri, options = {}) => {
+    const upload = async (localUri: string, options: UploadOptions = {}) => {
         setUploading(true);
         setError(null);
         setProgress(0);
@@ -15,7 +21,7 @@ export function useImageUpload() {
             const result = await uploadAndSyncImage(localUri, options);
             setProgress(100);
             return result;
-        } catch (err) {
+        } catch (err: any) {
             setError(err.message);
             throw err;
         } finally {
@@ -23,7 +29,7 @@ export function useImageUpload() {
         }
     };
 
-    const uploadMultiple = async (localUris, options = {}) => {
+    const uploadMultiple = async (localUris: string[], options: UploadOptions = {}) => {
         setUploading(true);
         setError(null);
         setProgress(0);
@@ -32,7 +38,7 @@ export function useImageUpload() {
             const result = await uploadAndSyncMultipleImages(localUris, options);
             setProgress(100);
             return result;
-        } catch (err) {
+        } catch (err: any) {
             setError(err.message);
             throw err;
         } finally {

@@ -2,11 +2,17 @@ import { uploadImage, uploadMultipleImages } from './storageService';
 import { syncImageToSymfony, syncMultipleImagesToSymfony } from '../api/imageSync';
 import { getAuthToken } from '../../app/api/auth';
 
-export async function uploadAndSyncImage(localUri, options = {}) {
+interface UploadOptions {
+    isPrivate?: boolean;
+    albumId?: string | null;
+    fileName?: string | null;
+}
+
+export async function uploadAndSyncImage(localUri: string, options: UploadOptions = {}) {
     const firebaseResult = await uploadImage(localUri, options);
 
     const token = await getAuthToken();
-    const symfonyResult = await syncImageToSymfony(firebaseResult, token);
+    const symfonyResult = await syncImageToSymfony(firebaseResult, token ?? null);
 
     return {
         firebase: firebaseResult,
@@ -14,7 +20,7 @@ export async function uploadAndSyncImage(localUri, options = {}) {
     };
 }
 
-export async function uploadAndSyncMultipleImages(localUris, options = {}) {
+export async function uploadAndSyncMultipleImages(localUris: string[], options: UploadOptions = {}) {
     const { results: firebaseResults, errors: uploadErrors } = await uploadMultipleImages(
         localUris,
         options
@@ -29,7 +35,7 @@ export async function uploadAndSyncMultipleImages(localUris, options = {}) {
 
     try {
         const token = await getAuthToken();
-        const symfonyResult = await syncMultipleImagesToSymfony(firebaseResults, token);
+        const symfonyResult = await syncMultipleImagesToSymfony(firebaseResults, token ?? null);
 
         return {
             success: firebaseResults.map((fb, index) => ({
@@ -38,7 +44,7 @@ export async function uploadAndSyncMultipleImages(localUris, options = {}) {
             })),
             errors: uploadErrors,
         };
-    } catch (syncError) {
+    } catch (syncError: any) {
         return {
             success: firebaseResults.map((fb) => ({
                 firebase: fb,

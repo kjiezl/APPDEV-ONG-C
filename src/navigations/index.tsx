@@ -1,10 +1,10 @@
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar, View } from 'react-native';
 
-import { useEffect } from 'react';
 import AuthNav from './AuthNavigations';
 
-export default () => {
+const Nav: React.FC = () => {
   useEffect(() => {
     StatusBar.setBarStyle('dark-content', true);
   }, []);
@@ -16,3 +16,5 @@ export default () => {
     </View>
   );
 };
+
+export default Nav;

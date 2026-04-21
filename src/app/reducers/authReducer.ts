@@ -1,12 +1,23 @@
 import * as types from '../actions/actionTypes';
 
-const initialState = {
+interface AuthState {
+  user: any;
+  loading: boolean;
+  error: string | null;
+}
+
+interface AuthAction {
+  type: string;
+  payload?: any;
+}
+
+const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state: AuthState = initialState, action: AuthAction): AuthState => {
   switch (action.type) {
     // Login
     case types.LOGIN_REQUEST:

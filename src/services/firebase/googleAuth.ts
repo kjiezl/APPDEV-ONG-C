@@ -1,20 +1,20 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-export function configureGoogleSignIn(webClientId) {
+export function configureGoogleSignIn(webClientId: string): void {
     GoogleSignin.configure({
         webClientId,
         offlineAccess: true,
     });
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(): Promise<{ user: any; idToken: string }> {
     try {
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
         const signInResult = await GoogleSignin.signIn();
 
-        const idToken = signInResult.data?.idToken;
+        const idToken = (signInResult as any).data?.idToken;
         if (!idToken) {
             throw new Error('No ID token found');
         }
@@ -33,7 +33,7 @@ export async function signInWithGoogle() {
     }
 }
 
-export async function signOut() {
+export async function signOut(): Promise<void> {
     try {
         await GoogleSignin.signOut();
         await auth().signOut();
@@ -47,6 +47,6 @@ export function getCurrentUser() {
     return auth().currentUser;
 }
 
-export function onAuthStateChanged(callback) {
+export function onAuthStateChanged(callback: (user: any) => void) {
     return auth().onAuthStateChanged(callback);
 }

@@ -3,16 +3,21 @@ import { onAuthStateChanged, configureGoogleSignIn } from '../services/firebase'
 
 const GOOGLE_WEB_CLIENT_ID = '433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com';
 
-const AuthContext = createContext(null);
+interface AuthContextType {
+    user: any;
+    loading: boolean;
+}
 
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+    const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         configureGoogleSignIn(GOOGLE_WEB_CLIENT_ID);
 
-        const unsubscribe = onAuthStateChanged((firebaseUser) => {
+        const unsubscribe = onAuthStateChanged((firebaseUser: any) => {
             setUser(firebaseUser);
             setLoading(false);
         });
@@ -27,7 +32,7 @@ export function AuthProvider({ children }) {
     );
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextType {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');

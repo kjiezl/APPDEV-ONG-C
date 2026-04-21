@@ -1,7 +1,27 @@
 import storage from '@react-native-firebase/storage';
 import auth from '@react-native-firebase/auth';
 
-export async function uploadImage(localUri, options = {}) {
+interface UploadOptions {
+    isPrivate?: boolean;
+    albumId?: string | null;
+    fileName?: string | null;
+}
+
+interface UploadResult {
+    storagePath: string;
+    downloadUrl: string | null;
+    fileName: string;
+    isPrivate: boolean;
+    albumId: string | null;
+    uploadedAt: string;
+}
+
+interface MultiUploadResult {
+    results: UploadResult[];
+    errors: { uri: string; error: string }[];
+}
+
+export async function uploadImage(localUri: string, options: UploadOptions = {}): Promise<UploadResult> {
     const {
         isPrivate = false,
         albumId = null,
@@ -66,15 +86,15 @@ export async function uploadImage(localUri, options = {}) {
     });
 }
 
-export async function uploadMultipleImages(localUris, options = {}) {
-    const results = [];
-    const errors = [];
+export async function uploadMultipleImages(localUris: string[], options: UploadOptions = {}): Promise<MultiUploadResult> {
+    const results: UploadResult[] = [];
+    const errors: { uri: string; error: string }[] = [];
 
     for (const uri of localUris) {
         try {
             const result = await uploadImage(uri, options);
             results.push(result);
-        } catch (error) {
+        } catch (error: any) {
             errors.push({ uri, error: error.message });
         }
     }
@@ -82,7 +102,7 @@ export async function uploadMultipleImages(localUris, options = {}) {
     return { results, errors };
 }
 
-export async function getPrivateImageUrl(storagePath) {
+export async function getPrivateImageUrl(storagePath: string): Promise<string> {
     const user = auth().currentUser;
     if (!user) {
         throw new Error('User must be authenticated to access private images');
@@ -96,7 +116,7 @@ export async function getPrivateImageUrl(storagePath) {
     return await reference.getDownloadURL();
 }
 
-export async function deleteImage(storagePath) {
+export async function deleteImage(storagePath: string): Promise<{ deleted: boolean; storagePath: string }> {
     const user = auth().currentUser;
     if (!user) {
         throw new Error('User must be authenticated to delete images');

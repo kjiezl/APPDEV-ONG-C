@@ -1,3 +1,4 @@
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
@@ -7,7 +8,7 @@ import ProfileScreen from '../screens/main/ProfileScreen';
 
 import { ROUTES } from '../utils';
 
-const MainNav = () => {
+const MainNav: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName={ROUTES.HOME}>
       <Stack.Screen name={ROUTES.HOME} component={HomeScreen} />

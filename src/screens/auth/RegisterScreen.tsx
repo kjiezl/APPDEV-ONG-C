@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
 import { ActivityIndicator, Alert, Image, Pressable, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerRequest, googleLoginRequest } from '../../app/actions';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInput from '../../components/CustomTextInput';
 import { ROUTES } from '../../utils';
+import { RootState } from '../../app/reducers';
 
-const RegisterScreen = () => {
+const RegisterScreen: React.FC = () => {
   const [username, setUsername] = useState('');
   const [accountType, setAccountType] = useState('');
   const [emailAdd, setEmailAdd] = useState('');
@@ -15,9 +16,9 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector(state => state.auth);
+  const { user, loading, error } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (isSubmitting && user) {
