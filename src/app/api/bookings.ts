@@ -10,7 +10,9 @@ export async function getBooking(id: number): Promise<any> {
 
 export async function createBooking(bookingData: {
     photographer_id: number;
-    date: string;
+    start_at: string;
+    end_at: string;
+    location?: string;
     notes?: string;
 }): Promise<any> {
     return api('/api/customer/bookings', {

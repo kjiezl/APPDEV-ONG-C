@@ -34,7 +34,9 @@ export const getBookingFailure = (error: string) => ({
 // Create booking
 export const createBookingRequest = (bookingData: {
   photographer_id: number;
-  date: string;
+  start_at: string;
+  end_at: string;
+  location?: string;
   notes?: string;
 }) => ({
   type: types.CREATE_BOOKING_REQUEST,
