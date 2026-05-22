@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPhotographerRequest } from '../../app/actions';
 import { RootState } from '../../app/reducers';
@@ -26,13 +26,39 @@ const PhotographerDetailScreen: React.FC = () => {
     );
   }
 
+  const initials = selectedPhotographer.username
+    ? selectedPhotographer.username.slice(0, 2).toUpperCase()
+    : '?';
+
+  const avatarColors = [
+    'bg-vivid-sky-blue',
+    'bg-accent-coral',
+    'bg-space-cadet',
+    'bg-slate-gray',
+  ];
+  const avatarColor = avatarColors[(selectedPhotographer.username?.charCodeAt(0) || 0) % avatarColors.length];
+
   return (
-    <ScrollView className="flex-1 bg-anti-flash-white">
-      <View className="items-center pt-8 pb-6">
-        <View className="w-24 h-24 rounded-full bg-vivid-sky-blue items-center justify-center mb-4">
-          <Text className="text-white text-4xl font-bold">
-            {selectedPhotographer.username?.charAt(0)?.toUpperCase() || '?'}
-          </Text>
+    <ScrollView
+      className="flex-1 bg-anti-flash-white"
+      contentContainerStyle={{ paddingBottom: 40 }}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Back button */}
+      <View className="px-5 pt-6">
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.7}
+          className="flex-row items-center"
+        >
+          <Text className="text-vivid-sky-blue text-base font-semibold">‹ Back</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Hero section */}
+      <View className="items-center pt-6 pb-8 px-5">
+        <View className={`w-24 h-24 rounded-full ${avatarColor} items-center justify-center mb-4 shadow-sm`}>
+          <Text className="text-white text-3xl font-bold">{initials}</Text>
         </View>
         <Text className="text-space-cadet text-2xl font-bold">
           {selectedPhotographer.username || 'Unknown'}
@@ -40,30 +66,36 @@ const PhotographerDetailScreen: React.FC = () => {
         <Text className="text-slate-gray text-sm mt-1">
           {selectedPhotographer.email || ''}
         </Text>
+        <View className={`mt-3 px-4 py-1 rounded-full ${selectedPhotographer.is_active ? 'bg-green-100' : 'bg-gray-100'}`}>
+          <Text className={`text-xs font-semibold ${selectedPhotographer.is_active ? 'text-green-600' : 'text-gray-400'}`}>
+            {selectedPhotographer.is_active ? '● Available for booking' : '● Offline'}
+          </Text>
+        </View>
       </View>
 
-      <View className="px-5 py-4">
-        <View className="bg-white rounded-xl p-4 shadow-sm">
-          <View className="flex-row justify-between py-3 border-b border-gray-100">
-            <Text className="text-gray-500">Username</Text>
-            <Text className="text-space-cadet font-medium">{selectedPhotographer.username || 'N/A'}</Text>
+      {/* Details card */}
+      <View className="mx-5">
+        <Text className="text-space-cadet font-bold text-base mb-3">Photographer Info</Text>
+        <View className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <View className="flex-row justify-between items-center px-4 py-4 border-b border-gray-100">
+            <Text className="text-slate-gray text-sm">Username</Text>
+            <Text className="text-space-cadet font-semibold text-sm">{selectedPhotographer.username || 'N/A'}</Text>
           </View>
-          <View className="flex-row justify-between py-3 border-b border-gray-100">
-            <Text className="text-gray-500">Email</Text>
-            <Text className="text-space-cadet font-medium">{selectedPhotographer.email || 'N/A'}</Text>
-          </View>
-          <View className="flex-row justify-between py-3">
-            <Text className="text-gray-500">Status</Text>
-            <View className={`px-2 py-1 rounded-full ${selectedPhotographer.is_active ? 'bg-green-100' : 'bg-red-100'}`}>
-              <Text className={`text-xs font-medium ${selectedPhotographer.is_active ? 'text-green-600' : 'text-red-600'}`}>
-                {selectedPhotographer.is_active ? 'Available' : 'Unavailable'}
-              </Text>
-            </View>
+          <View className="flex-row justify-between items-center px-4 py-4">
+            <Text className="text-slate-gray text-sm">Email</Text>
+            <Text className="text-space-cadet font-semibold text-sm" numberOfLines={1}>
+              {selectedPhotographer.email || 'N/A'}
+            </Text>
           </View>
         </View>
+      </View>
 
+      {/* Book button */}
+      <View className="mx-5 mt-6">
         <CustomButton
-          containerStyle="w-full mt-2"
+          containerStyle="w-full"
+          touchableStyle="mt-0"
+          buttonStyle="rounded-xl"
           onPress={() =>
             navigation.navigate(ROUTES.CREATE_BOOKING, {
               photographerId: selectedPhotographer.id,

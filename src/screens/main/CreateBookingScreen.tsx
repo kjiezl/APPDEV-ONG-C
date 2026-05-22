@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { ActivityIndicator, Alert, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createBookingRequest } from '../../app/actions';
 import { RootState } from '../../app/reducers';
@@ -25,8 +25,8 @@ const CreateBookingScreen: React.FC = () => {
   useEffect(() => {
     if (isSubmitting && bookings.length > prevBookingsCount) {
       setIsSubmitting(false);
-      Alert.alert('Success', 'Booking created successfully!', [
-        { text: 'OK', onPress: () => navigation.navigate(ROUTES.BOOKINGS) },
+      Alert.alert('Booking Confirmed!', 'Your booking has been created successfully.', [
+        { text: 'View Bookings', onPress: () => navigation.navigate(ROUTES.BOOKINGS) },
       ]);
     }
   }, [bookings, isSubmitting, prevBookingsCount, navigation]);
@@ -40,7 +40,7 @@ const CreateBookingScreen: React.FC = () => {
 
   const handleCreate = () => {
     if (!date) {
-      Alert.alert('Missing fields', 'Please enter a date (e.g. 2026-06-01)');
+      Alert.alert('Missing date', 'Please enter a date before confirming your booking.');
       return;
     }
 
@@ -54,19 +54,56 @@ const CreateBookingScreen: React.FC = () => {
     );
   };
 
+  const initials = photographerName
+    ? photographerName.slice(0, 2).toUpperCase()
+    : '?';
+
+  const avatarColors = ['bg-vivid-sky-blue', 'bg-accent-coral', 'bg-space-cadet', 'bg-slate-gray'];
+  const avatarColor = avatarColors[(photographerName?.charCodeAt(0) || 0) % avatarColors.length];
+
   return (
-    <ScrollView className="flex-1 bg-anti-flash-white" contentContainerStyle={{ paddingBottom: 40 }}>
+    <ScrollView
+      className="flex-1 bg-anti-flash-white"
+      contentContainerStyle={{ paddingBottom: 48 }}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Back button */}
       <View className="px-5 pt-6">
-        <Text className="text-2xl font-bold text-space-cadet mb-2">Create Booking</Text>
-        <Text className="text-slate-gray mb-6">
-          Booking with <Text className="font-bold text-vivid-sky-blue">{photographerName}</Text>
-        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          activeOpacity={0.7}
+          className="flex-row items-center"
+        >
+          <Text className="text-vivid-sky-blue text-base font-semibold">‹ Back</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Header */}
+      <View className="px-5 pt-4 pb-2">
+        <Text className="text-2xl font-bold text-space-cadet">Create Booking</Text>
+        <Text className="text-slate-gray text-sm mt-1">Fill in the details below to confirm</Text>
+      </View>
+
+      {/* Photographer summary card */}
+      <View className="mx-5 mt-4 bg-white rounded-2xl shadow-sm px-4 py-4 flex-row items-center">
+        <View className={`w-12 h-12 rounded-full ${avatarColor} items-center justify-center`}>
+          <Text className="text-white font-bold text-base">{initials}</Text>
+        </View>
+        <View className="ml-3 flex-1">
+          <Text className="text-xs text-slate-gray">Booking with</Text>
+          <Text className="text-space-cadet font-bold text-base">{photographerName}</Text>
+        </View>
+      </View>
+
+      {/* Form card */}
+      <View className="mx-5 mt-5 bg-white rounded-2xl shadow-sm px-4 pt-4 pb-2">
+        <Text className="text-space-cadet font-bold text-base mb-4">Booking Details</Text>
 
         <CustomTextInput
-          label="Date (YYYY-MM-DD)"
-          placeholder="e.g. 2026-06-01"
+          label="Date"
+          placeholder="YYYY-MM-DD  e.g. 2026-06-01"
           value={(val) => setDate(val)}
-          containerStyle="p-2.5 w-full"
+          containerStyle="w-full mb-2"
           textStyle="text-[15px]"
         />
 
@@ -74,12 +111,17 @@ const CreateBookingScreen: React.FC = () => {
           label="Notes (optional)"
           placeholder="e.g. Wedding shoot, outdoor location"
           value={(val) => setNotes(val)}
-          containerStyle="p-2.5 w-full"
+          containerStyle="w-full mb-2"
           textStyle="text-[15px]"
         />
+      </View>
 
+      {/* Confirm button */}
+      <View className="mx-5 mt-5">
         <CustomButton
-          containerStyle="w-full mt-2"
+          containerStyle="w-full"
+          touchableStyle="mt-0"
+          buttonStyle="rounded-xl"
           onPress={handleCreate}
           disabled={loading}
         >

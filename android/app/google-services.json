@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "433662515048",
-    "project_id": "qwepic-8136f",
-    "storage_bucket": "qwepic-8136f.firebasestorage.app"
+    "project_number": "185214544147",
+    "project_id": "qwepic-app",
+    "storage_bucket": "qwepic-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:433662515048:android:bb7e6d12109e8eafa2e8dd",
+        "mobilesdk_app_id": "1:185214544147:android:389f892f883308c2bb92e6",
         "android_client_info": {
           "package_name": "com.ong"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com",
+          "client_id": "185214544147-rkuqrng63do354h5rero6u7jh9rkud24.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ong",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "185214544147-1jo57fq69jb5tpn07t6qbcstp6ok2j3u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA7oogiRdm9DtX6RI5NaOznJ_mb0sw-tx8"
+          "current_key": "AIzaSyAOdQ7qRCtGWwZ9aj7NL3XWNWD_S-R_jEc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com",
+              "client_id": "185214544147-1jo57fq69jb5tpn07t6qbcstp6ok2j3u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
