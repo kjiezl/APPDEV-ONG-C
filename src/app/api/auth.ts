@@ -1,9 +1,9 @@
-const BASE_URL = 'http://192.168.11.186:8000/api';
+import { api, setAuthToken, clearAuthToken } from './client';
 
-let authToken: string | null = null;
+const LOCAL_API = 'http://192.168.118.186:8000/api';
 
 export async function login(username: string, password: string): Promise<any> {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
+    const response = await fetch(`${LOCAL_API}/auth/login`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -19,15 +19,14 @@ export async function login(username: string, password: string): Promise<any> {
     }
 
     if (data.token) {
-        console.log('token:', data.token);
-        authToken = data.token;
+        setAuthToken(data.token);
     }
 
     return data;
 }
 
 export async function register(username: string, email: string, password: string, accountType: string): Promise<any> {
-    const response = await fetch(`${BASE_URL}/auth/register`, {
+    const response = await fetch(`${LOCAL_API}/auth/register`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -43,64 +42,36 @@ export async function register(username: string, email: string, password: string
     }
 
     if (data.token) {
-        console.log('token:', data.token);
-        authToken = data.token;
+        setAuthToken(data.token);
     }
 
     return data;
 }
 
 export async function googleLogin(idToken: string, email: string, displayName: string): Promise<any> {
-    const response = await fetch(`${BASE_URL}/auth/google`, {
+    const data = await api('/api/auth/google', {
         method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ idToken, email, displayName }),
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error(data.message || 'Google login failed');
-    }
-
     if (data.token) {
-        console.log('token:', data.token);
-        authToken = data.token;
+        setAuthToken(data.token);
     }
 
     return data;
-}
-
-export async function getAuthToken(): Promise<string | null> {
-    return authToken;
 }
 
 export async function logout(): Promise<void> {
-    authToken = null;
+    clearAuthToken();
 }
 
 export async function getProfile(): Promise<any> {
-    if (!authToken) {
-        throw new Error('Not authenticated');
-    }
+    return api('/api/customer/profile');
+}
 
-    const response = await fetch(`${BASE_URL}/auth/profile`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`,
-        },
+export async function updateProfile(profileData: Record<string, any>): Promise<any> {
+    return api('/api/customer/profile', {
+        method: 'PATCH',
+        body: JSON.stringify(profileData),
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch profile');
-    }
-
-    return data;
 }

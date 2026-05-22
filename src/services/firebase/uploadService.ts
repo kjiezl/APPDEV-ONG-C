@@ -1,6 +1,6 @@
 import { uploadImage, uploadMultipleImages } from './storageService';
 import { syncImageToSymfony, syncMultipleImagesToSymfony } from '../api/imageSync';
-import { getAuthToken } from '../../app/api/auth';
+import { getAuthToken } from '../../app/api/client';
 
 interface UploadOptions {
     isPrivate?: boolean;

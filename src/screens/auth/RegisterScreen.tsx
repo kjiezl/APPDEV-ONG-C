@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, Alert, Image, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerRequest, googleLoginRequest } from '../../app/actions';
 import CustomButton from '../../components/CustomButton';
@@ -10,7 +10,6 @@ import { RootState } from '../../app/reducers';
 
 const RegisterScreen: React.FC = () => {
   const [username, setUsername] = useState('');
-  const [accountType, setAccountType] = useState('');
   const [emailAdd, setEmailAdd] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -41,7 +40,7 @@ const RegisterScreen: React.FC = () => {
   };
 
   const handleRegister = () => {
-    if (!username || !accountType || !emailAdd || !password || !confirmPassword) {
+    if (!username || !emailAdd || !password || !confirmPassword) {
       Alert.alert('Missing fields', 'Please fill in all required information.');
       return;
     }
@@ -52,7 +51,7 @@ const RegisterScreen: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    dispatch(registerRequest(username, emailAdd, password, accountType));
+    dispatch(registerRequest(username, emailAdd, password, 'personal'));
   };
 
   return (
@@ -60,10 +59,10 @@ const RegisterScreen: React.FC = () => {
       <Image
         source={require('../../../assets/images/trans-q-logo.png')}
         alt="QwePic Logo"
-        className='w-[70px] h-[70px] mb-10'
+        className='w-[50px] h-[50px] mb-3'
       />
 
-      <Text className="text-[40px] font-bold mb-10">
+      <Text className="text-[40px] font-bold mb-5">
         Create Account
       </Text>
 
@@ -83,41 +82,13 @@ const RegisterScreen: React.FC = () => {
         textStyle="text-[15px]"
       />
 
-      <View className="p-2.5 w-4/5">
-        <Text className='color-[#555]'>Account Type</Text>
-        <View className="flex-row mt-2.5">
-          <Pressable
-            onPress={() => setAccountType('personal')}
-            className="flex-row items-center mr-6"
-          >
-            <View className="w-5 h-5 rounded-full border border-slate-gray items-center justify-center">
-              {accountType === 'personal' ? (
-                <View className="w-3 h-3 rounded-full bg-accent-coral" />
-              ) : null}
-            </View>
-            <Text className="ml-2.5 text-[#333]">Client</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => setAccountType('business')}
-            className="flex-row items-center"
-          >
-            <View className="w-5 h-5 rounded-full border border-slate-gray items-center justify-center">
-              {accountType === 'business' ? (
-                <View className="w-3 h-3 rounded-full bg-accent-coral" />
-              ) : null}
-            </View>
-            <Text className="ml-2.5 text-[#333]">Photographer</Text>
-          </Pressable>
-        </View>
-      </View>
-
       <CustomTextInput
         label={'Password'}
         placeholder={'********'}
         value={val => setPassword(val)}
         containerStyle="p-2.5 w-4/5"
         textStyle="text-[15px]"
+        secureTextEntry
       />
 
       <CustomTextInput
@@ -126,6 +97,7 @@ const RegisterScreen: React.FC = () => {
         value={val => setConfirmPassword(val)}
         containerStyle="p-2.5 w-4/5"
         textStyle="text-[15px]"
+        secureTextEntry
       />
 
       <CustomButton

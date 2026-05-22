@@ -10,6 +10,8 @@ import {
   logoutSuccess,
   getProfileSuccess,
   getProfileFailure,
+  updateProfileSuccess,
+  updateProfileFailure,
 } from '../actions/authActions';
 import { signInWithGoogle } from '../../services/firebase/googleAuth';
 import * as authApi from '../api/auth';
@@ -67,10 +69,20 @@ function* handleGetProfile(): Generator<any, void, any> {
   }
 }
 
+function* handleUpdateProfile(action: any): Generator<any, void, any> {
+  try {
+    const response = yield call(authApi.updateProfile, action.payload);
+    yield put(updateProfileSuccess(response));
+  } catch (error: any) {
+    yield put(updateProfileFailure(error.message));
+  }
+}
+
 export default function* authSaga(): Generator<any, void, any> {
   yield takeLatest(types.LOGIN_REQUEST, handleLogin);
   yield takeLatest(types.REGISTER_REQUEST, handleRegister);
   yield takeLatest(types.GOOGLE_LOGIN_REQUEST, handleGoogleLogin);
   yield takeLatest(types.LOGOUT_REQUEST, handleLogout);
   yield takeLatest(types.GET_PROFILE_REQUEST, handleGetProfile);
+  yield takeLatest(types.UPDATE_PROFILE_REQUEST, handleUpdateProfile);
 }

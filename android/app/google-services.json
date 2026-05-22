@@ -12,7 +12,12 @@
           "package_name": "com.ong"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA7oogiRdm9DtX6RI5NaOznJ_mb0sw-tx8"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

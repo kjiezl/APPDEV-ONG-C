@@ -72,6 +72,7 @@ const LoginScreen: React.FC = () => {
         value={val => setPassword(val)}
         containerStyle="p-2.5 w-4/5"
         textStyle="text-[15px]"
+        secureTextEntry
       />
 
       <Text className="size-13 text-vivid-sky-blue self-end mr-[50px] mb-2.5">

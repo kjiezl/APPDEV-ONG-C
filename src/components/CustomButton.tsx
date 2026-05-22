@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 interface CustomButtonProps {
   containerStyle?: string;
+  touchableStyle?: string;
   label?: string;
   onPress?: () => void;
   textStyle?: string;
@@ -11,10 +12,24 @@ interface CustomButtonProps {
   children?: React.ReactNode;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ containerStyle, label, onPress, textStyle, buttonStyle, disabled, children }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({
+  containerStyle,
+  touchableStyle,
+  label,
+  onPress,
+  textStyle,
+  buttonStyle,
+  disabled,
+  children,
+}) => {
   return (
     <View className={`${containerStyle}`}>
-      <TouchableOpacity className='m-5' onPress={onPress} disabled={disabled} activeOpacity={disabled ? 1 : 0.7}>
+      <TouchableOpacity
+        className={touchableStyle ?? 'm-5'}
+        onPress={onPress}
+        disabled={disabled}
+        activeOpacity={disabled ? 1 : 0.7}
+      >
         <View className={`p-4 bg-accent-coral rounded-lg ${buttonStyle} ${disabled ? 'opacity-70' : ''}`}>
           {children ? (
             children

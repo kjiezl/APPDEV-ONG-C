@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar, View } from 'react-native';
 
 import AuthNav from './AuthNavigations';
+import { navigationRef } from './navigationRef';
 
 const Nav: React.FC = () => {
   useEffect(() => {
@@ -10,7 +11,7 @@ const Nav: React.FC = () => {
   }, []);
   return (
     <View className='flex-1'>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <AuthNav />
       </NavigationContainer>
     </View>

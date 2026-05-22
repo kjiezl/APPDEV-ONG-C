@@ -24,6 +24,7 @@ const authReducer = (state: AuthState = initialState, action: AuthAction): AuthS
     case types.REGISTER_REQUEST:
     case types.GOOGLE_LOGIN_REQUEST:
     case types.GET_PROFILE_REQUEST:
+    case types.UPDATE_PROFILE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -42,12 +43,14 @@ const authReducer = (state: AuthState = initialState, action: AuthAction): AuthS
     case types.REGISTER_FAILURE:
     case types.GOOGLE_LOGIN_FAILURE:
     case types.GET_PROFILE_FAILURE:
+    case types.UPDATE_PROFILE_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
     case types.GET_PROFILE_SUCCESS:
+    case types.UPDATE_PROFILE_SUCCESS:
       return {
         ...state,
         loading: false,

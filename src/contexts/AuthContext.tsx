@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { onAuthStateChanged, configureGoogleSignIn } from '../services/firebase';
 
-const GOOGLE_WEB_CLIENT_ID = '433662515048-guhfhvrh72t0gp618itftrq9qqef2oks.apps.googleusercontent.com';
+const GOOGLE_WEB_CLIENT_ID = '185214544147-rkuqrng63do354h5rero6u7jh9rkud24.apps.googleusercontent.com';
 
 interface AuthContextType {
     user: any;

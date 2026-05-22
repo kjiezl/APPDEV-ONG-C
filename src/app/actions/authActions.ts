@@ -70,3 +70,19 @@ export const getProfileFailure = (error: string) => ({
   type: types.GET_PROFILE_FAILURE,
   payload: error,
 });
+
+// Update Profile
+export const updateProfileRequest = (profileData: Record<string, any>) => ({
+  type: types.UPDATE_PROFILE_REQUEST,
+  payload: profileData,
+});
+
+export const updateProfileSuccess = (profile: any) => ({
+  type: types.UPDATE_PROFILE_SUCCESS,
+  payload: profile,
+});
+
+export const updateProfileFailure = (error: string) => ({
+  type: types.UPDATE_PROFILE_FAILURE,
+  payload: error,
+});
