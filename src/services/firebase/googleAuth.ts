@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-const API_BASE_URL = 'http://192.168.118.186:8000';
+const API_BASE_URL = 'http://192.168.196.186:8000';
 
 export function configureGoogleSignIn(webClientId: string): void {
     console.log('Configuring Google Sign-In with webClientId:', webClientId);
@@ -11,10 +11,10 @@ export function configureGoogleSignIn(webClientId: string): void {
     });
 }
 
-export async function signInWithGoogle(): Promise<{ user: any; idToken: string }> {
+export async function signInWithGoogle(): Promise<{ idToken: string; googleUser: { email: string; displayName: string } }> {
     try {
         console.log('Starting Google Sign-In...');
-        
+
         // Check if Play Services are available
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         console.log('✓ Play Services available');
@@ -34,7 +34,7 @@ export async function signInWithGoogle(): Promise<{ user: any; idToken: string }
         // Extract user info using type assertion
         const userInfo = (signInResult as any)?.user || (signInResult as any)?.data?.user || signInResult;
         const email = userInfo?.email || (signInResult as any)?.email;
-        const displayName = userInfo?.name || userInfo?.email || email || 'User';
+        const displayName = userInfo?.name || userInfo?.displayName || email || 'User';
 
         console.log('User email:', email);
         console.log('User display name:', displayName);
@@ -43,48 +43,9 @@ export async function signInWithGoogle(): Promise<{ user: any; idToken: string }
             throw new Error('No email found in sign-in result');
         }
 
-        // Send token to backend for authentication
-        console.log('Sending token to backend...');
-        const backendResponse = await fetch(`${API_BASE_URL}/api/auth/google`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                idToken,
-                email,
-                displayName,
-            }),
-        });
-
-        console.log('Backend response status:', backendResponse.status);
-        const backendData = await backendResponse.json();
-        console.log('Backend response:', JSON.stringify(backendData, null, 2));
-
-        if (!backendResponse.ok) {
-            throw new Error(
-                backendData.message || `Backend authentication failed (${backendResponse.status})`
-            );
-        }
-
-        console.log('✓ Backend authentication successful');
-
-        // The backend returns a JWT token
-        const jwtToken = backendData.token;
-        const userData = backendData.user;
-
-        // Store JWT token in AsyncStorage for future requests
-        try {
-            const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-            await AsyncStorage.setItem('@auth_token', jwtToken);
-            console.log('✓ JWT token stored in AsyncStorage');
-        } catch (storageError) {
-            console.warn('Failed to store JWT token:', storageError);
-        }
-
         return {
-            user: userData,
-            idToken: jwtToken, // Return JWT token from backend
+            idToken,
+            googleUser: { email, displayName },
         };
     } catch (error: any) {
         console.error('❌ Google Sign-In Error Code:', error.code);

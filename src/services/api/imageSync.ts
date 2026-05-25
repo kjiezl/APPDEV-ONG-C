@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.148.187:8000/api';
+const BASE_URL = 'http://192.168.196.187:8000/api';
 
 interface ImageData {
     storagePath: string;

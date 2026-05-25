@@ -114,6 +114,17 @@ const BookingsScreen: React.FC = () => {
 
   return (
     <View className="flex-1 bg-anti-flash-white">
+      {/* Back button */}
+      <View className="px-5 pt-6">
+        <TouchableOpacity
+          onPress={() => navigation.navigate(ROUTES.HOME)}
+          activeOpacity={0.7}
+          className="flex-row items-center"
+        >
+          <Text className="text-vivid-sky-blue text-base font-semibold">‹ Back</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Header */}
       <View className="px-5 pt-6 pb-4">
         <Text className="text-2xl font-bold text-space-cadet">My Bookings</Text>

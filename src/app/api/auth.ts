@@ -1,6 +1,6 @@
 import { api, setAuthToken, clearAuthToken } from './client';
 
-const LOCAL_API = 'http://192.168.118.186:8000/api';
+const LOCAL_API = 'http://192.168.196.186:8000/api';
 
 export async function login(username: string, password: string): Promise<any> {
     const response = await fetch(`${LOCAL_API}/auth/login`, {
@@ -66,7 +66,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function getProfile(): Promise<any> {
-    return api('/api/customer/profile');
+    return api('/api/auth/profile');
 }
 
 export async function updateProfile(profileData: Record<string, any>): Promise<any> {
