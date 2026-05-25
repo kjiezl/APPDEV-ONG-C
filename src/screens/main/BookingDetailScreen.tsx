@@ -8,10 +8,10 @@ import CustomButton from '../../components/CustomButton';
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   requested:  { bg: 'bg-yellow-50',  text: 'text-yellow-600', dot: 'bg-yellow-400', label: 'Requested' },
-  confirmed:  { bg: 'bg-green-50',   text: 'text-green-600',  dot: 'bg-green-400',  label: 'Confirmed' },
-  cancelled:  { bg: 'bg-red-50',     text: 'text-red-500',    dot: 'bg-red-400',    label: 'Cancelled' },
+  accepted:   { bg: 'bg-green-50',   text: 'text-green-600',  dot: 'bg-green-400',  label: 'Confirmed' },
+  rejected:   { bg: 'bg-red-50',     text: 'text-red-600',    dot: 'bg-red-400',    label: 'Rejected' },
+  cancelled:  { bg: 'bg-gray-50',    text: 'text-gray-600',   dot: 'bg-gray-400',   label: 'Cancelled' },
   completed:  { bg: 'bg-blue-50',    text: 'text-blue-600',   dot: 'bg-blue-400',   label: 'Completed' },
-  rejected:   { bg: 'bg-gray-100',   text: 'text-gray-500',   dot: 'bg-gray-400',   label: 'Rejected' },
 };
 
 const formatDate = (iso?: string): string => {

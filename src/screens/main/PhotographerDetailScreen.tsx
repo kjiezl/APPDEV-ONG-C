@@ -32,7 +32,6 @@ const PhotographerDetailScreen: React.FC = () => {
 
   const avatarColors = [
     'bg-vivid-sky-blue',
-    'bg-accent-coral',
     'bg-space-cadet',
     'bg-slate-gray',
   ];

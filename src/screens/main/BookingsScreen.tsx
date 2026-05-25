@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBookingsRequest } from '../../app/actions';
 import { RootState } from '../../app/reducers';
 import { ROUTES } from '../../utils';
+import { isConnected } from '../../services/mercure';
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; dot: string; label: string }> = {
   requested:  { bg: 'bg-yellow-50',  text: 'text-yellow-600', dot: 'bg-yellow-400', label: 'Requested' },
-  confirmed:  { bg: 'bg-green-50',   text: 'text-green-600',  dot: 'bg-green-400',  label: 'Confirmed' },
-  cancelled:  { bg: 'bg-red-50',     text: 'text-red-500',    dot: 'bg-red-400',    label: 'Cancelled' },
+  accepted:   { bg: 'bg-green-50',   text: 'text-green-600',  dot: 'bg-green-400',  label: 'Confirmed' },
+  rejected:   { bg: 'bg-red-50',     text: 'text-red-600',    dot: 'bg-red-400',    label: 'Rejected' },
+  cancelled:  { bg: 'bg-gray-50',    text: 'text-gray-600',   dot: 'bg-gray-400',   label: 'Cancelled' },
   completed:  { bg: 'bg-blue-50',    text: 'text-blue-600',   dot: 'bg-blue-400',   label: 'Completed' },
-  rejected:   { bg: 'bg-gray-100',   text: 'text-gray-500',   dot: 'bg-gray-400',   label: 'Rejected' },
 };
 
 const formatDate = (iso?: string): string => {
@@ -99,6 +100,15 @@ const BookingsScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const { bookings, loading, error } = useSelector((state: RootState) => state.bookings);
+  const [mercureConnected, setMercureConnected] = React.useState(isConnected());
+
+  // Poll Mercure connection status every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMercureConnected(isConnected());
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     dispatch(getBookingsRequest());
@@ -127,7 +137,9 @@ const BookingsScreen: React.FC = () => {
 
       {/* Header */}
       <View className="px-5 pt-6 pb-4">
-        <Text className="text-2xl font-bold text-space-cadet">My Bookings</Text>
+        <View className="flex-row justify-between items-center">
+          <Text className="text-2xl font-bold text-space-cadet">My Bookings</Text>
+        </View>
         <Text className="text-slate-gray text-sm mt-1">
           {bookings.length > 0
             ? `${bookings.length} booking${bookings.length !== 1 ? 's' : ''}`

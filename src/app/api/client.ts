@@ -1,6 +1,6 @@
 import { navigateToLogin } from '../../navigations/navigationRef';
 
-const API_BASE = 'http://192.168.196.186:8000';
+export const API_BASE = 'http://192.168.196.186:8000';
 
 let authToken: string | null = null;
 

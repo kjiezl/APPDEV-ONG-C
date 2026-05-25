@@ -49,6 +49,21 @@ const photographerReducer = (state: PhotographerState = initialState, action: Ph
         loading: false,
         error: action.payload,
       };
+    // Mercure real-time events
+    case types.MERCURE_PHOTOGRAPHER_UPDATED: {
+      const updated = action.payload;
+      const exists = state.photographers.some((p: any) => p.id === updated.id);
+      return {
+        ...state,
+        photographers: exists
+          ? state.photographers.map((p: any) => (p.id === updated.id ? updated : p))
+          : [...state.photographers, updated],
+        selectedPhotographer:
+          state.selectedPhotographer?.id === updated.id
+            ? updated
+            : state.selectedPhotographer,
+      };
+    }
     case types.LOGOUT_SUCCESS:
       return { ...initialState };
     default:

@@ -61,6 +61,14 @@ const authReducer = (state: AuthState = initialState, action: AuthAction): AuthS
       return {
         ...initialState,
       };
+    // Mercure real-time events
+    case types.MERCURE_PROFILE_UPDATED:
+      return {
+        ...state,
+        user: state.user?.id === action.payload.id
+          ? { ...state.user, ...action.payload }
+          : state.user,
+      };
     default:
       return state;
   }

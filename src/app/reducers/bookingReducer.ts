@@ -73,6 +73,36 @@ const bookingReducer = (state: BookingState = initialState, action: BookingActio
         loading: false,
         error: action.payload,
       };
+    // Mercure real-time events
+    case types.MERCURE_BOOKING_CREATED:
+      return {
+        ...state,
+        bookings: state.bookings.some((b: any) => b.id === action.payload.id)
+          ? state.bookings
+          : [...state.bookings, action.payload],
+      };
+    case types.MERCURE_BOOKING_UPDATED:
+      return {
+        ...state,
+        bookings: state.bookings.map((b: any) =>
+          b.id === action.payload.id ? action.payload : b,
+        ),
+        selectedBooking:
+          state.selectedBooking?.id === action.payload.id
+            ? action.payload
+            : state.selectedBooking,
+      };
+    case types.MERCURE_BOOKING_CANCELLED:
+      return {
+        ...state,
+        bookings: state.bookings.map((b: any) =>
+          b.id === action.payload.id ? action.payload : b,
+        ),
+        selectedBooking:
+          state.selectedBooking?.id === action.payload.id
+            ? action.payload
+            : state.selectedBooking,
+      };
     case types.LOGOUT_SUCCESS:
       return { ...initialState };
     default:
