@@ -1,9 +1,7 @@
-import { api, setAuthToken, clearAuthToken } from './client';
-
-const LOCAL_API = 'http://192.168.196.186:8000/api';
+import { api, setAuthToken, clearAuthToken, API_BASE } from './client';
 
 export async function login(username: string, password: string): Promise<any> {
-    const response = await fetch(`${LOCAL_API}/auth/login`, {
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -26,7 +24,7 @@ export async function login(username: string, password: string): Promise<any> {
 }
 
 export async function register(username: string, email: string, password: string, accountType: string): Promise<any> {
-    const response = await fetch(`${LOCAL_API}/auth/register`, {
+    const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -66,7 +64,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function getProfile(): Promise<any> {
-    return api('/api/auth/profile');
+    return api('/api/customer/profile');
 }
 
 export async function updateProfile(profileData: Record<string, any>): Promise<any> {

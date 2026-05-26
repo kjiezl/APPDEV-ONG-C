@@ -1,7 +1,8 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import Config from 'react-native-config';
 
-const API_BASE_URL = 'http://192.168.196.186:8000';
+const API_BASE_URL = Config.API_BASE_URL || 'https://qwepic.onrender.com';
 
 export function configureGoogleSignIn(webClientId: string): void {
     console.log('Configuring Google Sign-In with webClientId:', webClientId);

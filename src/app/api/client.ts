@@ -1,6 +1,7 @@
 import { navigateToLogin } from '../../navigations/navigationRef';
+import Config from 'react-native-config';
 
-export const API_BASE = 'http://192.168.196.186:8000';
+export const API_BASE = Config.API_BASE_URL || 'https://qwepic.onrender.com';
 
 let authToken: string | null = null;
 

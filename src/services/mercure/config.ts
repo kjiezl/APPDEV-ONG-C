@@ -1,10 +1,17 @@
 import { API_BASE } from '../../app/api/client';
+import Config from 'react-native-config';
 
-// Mercure Hub runs on Docker port 3001 (mapped from container port 3000)
-// Symfony app runs on port 8000 via `symfony serve`
-const MERCURE_HOST = API_BASE.replace(':8000', ':3001');
-// Note: No trailing slash - the URL constructor in mercureClient will add ?topic=...
-export const MERCURE_HUB_URL = `${MERCURE_HOST}/.well-known/mercure`;
+// Determine Mercure URL based on environment
+let MERCURE_HUB_URL: string;
+
+if (API_BASE.includes('onrender.com')) {
+  // Production: Use Render Mercure service
+  MERCURE_HUB_URL = 'https://qwepic-mercure.onrender.com/.well-known/mercure';
+} else {
+  // Local development: Use local Docker Mercure on port 3001
+  const MERCURE_HOST = API_BASE.replace(':8000', ':3001');
+  MERCURE_HUB_URL = `${MERCURE_HOST}/.well-known/mercure`;
+}
 
 // Topic prefixes used by the Symfony backend
 export const TOPICS = {
@@ -18,3 +25,5 @@ export const TOPICS = {
   PROFILE: (userId: number | string) =>
     `${API_BASE}/api/users/${userId}/profile`,
 };
+
+export { MERCURE_HUB_URL };
