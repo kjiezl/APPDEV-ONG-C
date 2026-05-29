@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import CustomButton from '../../components/CustomButton';
 import { ROUTES } from '../../utils';
+import { RootState } from '../../app/reducers';
 
 interface Post {
   id: string;
@@ -56,6 +58,40 @@ const PLACEHOLDER_POSTS: Post[] = [
   },
 ];
 
+const BellButton: React.FC<{ onPress: () => void; unreadCount: number }> = ({
+  onPress,
+  unreadCount,
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    activeOpacity={0.7}
+    className="w-10 h-10 rounded-full bg-white items-center justify-center shadow-sm"
+    style={{ position: 'relative' }}
+  >
+    <Text style={{ fontSize: 18 }}>🔔</Text>
+    {unreadCount > 0 && (
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          backgroundColor: '#ef4444',
+          borderRadius: 999,
+          minWidth: 16,
+          height: 16,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 3,
+        }}
+      >
+        <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold', lineHeight: 14 }}>
+          {unreadCount > 9 ? '9+' : unreadCount}
+        </Text>
+      </View>
+    )}
+  </TouchableOpacity>
+);
+
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
   return (
     <View className="bg-white rounded-2xl mb-5 shadow-sm overflow-hidden">
@@ -90,6 +126,9 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<any>();
+  const unreadCount = useSelector(
+    (state: RootState) => state.notifications.items.filter(n => !n.read).length,
+  );
 
   return (
     <ScrollView
@@ -103,13 +142,19 @@ const HomeScreen: React.FC = () => {
           <Text className="text-2xl font-bold text-space-cadet">QwePic</Text>
           {/* <Text className="text-gray-400 text-xs mt-0.5">Discover amazing photography</Text> */}
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(ROUTES.PROFILE)}
-          className="w-10 h-10 rounded-full bg-vivid-sky-blue items-center justify-center shadow-sm"
-          activeOpacity={0.8}
-        >
-          <Text className="text-white font-bold">👤</Text>
-        </TouchableOpacity>
+        <View className="flex-row items-center gap-2">
+          <BellButton
+            unreadCount={unreadCount}
+            onPress={() => navigation.navigate(ROUTES.NOTIFICATIONS)}
+          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ROUTES.PROFILE)}
+            className="w-10 h-10 rounded-full bg-vivid-sky-blue items-center justify-center shadow-sm"
+            activeOpacity={0.8}
+          >
+            <Text className="text-white font-bold">👤</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Action Buttons */}

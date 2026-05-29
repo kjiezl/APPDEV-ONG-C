@@ -15,6 +15,8 @@ import { connect, disconnect, TOPICS } from '../../services/mercure';
 import type { MercureMessage } from '../../services/mercure';
 import * as mercureApi from '../api/mercure';
 import { RootState } from '../reducers';
+import { addNotification, setLastKnownStatus } from '../actions/notificationActions';
+import { getBookingNotificationText } from '../../utils/notificationMessages';
 
 /**
  * Creates a Redux-Saga EventChannel that bridges Mercure SSE events
@@ -57,18 +59,30 @@ function* handleMercureMessage(message: MercureMessage): Generator<any, void, an
   }
 
   switch (event) {
-    case 'booking.created':
+    case 'booking.created': {
       yield put(mercureBookingCreated(data));
+      const text = getBookingNotificationText('REQUESTED', data?.photographer?.username);
+      yield put(addNotification({ type: 'booking.created', ...text, bookingId: data?.id, status: 'REQUESTED' }));
       break;
-    case 'booking.updated':
-      if (__DEV__) {
-        console.log('[Mercure Saga] Dispatching booking updated:', data);
-      }
+    }
+    case 'booking.updated': {
+      if (__DEV__) console.log('[Mercure Saga] Dispatching booking updated:', data);
       yield put(mercureBookingUpdated(data));
+      const bookingId = String(data?.id);
+      const newStatus = data?.status;
+      if (bookingId && newStatus) {
+        yield put(setLastKnownStatus(bookingId, newStatus));
+        const text = getBookingNotificationText(newStatus, data?.photographer?.username);
+        yield put(addNotification({ type: 'booking.updated', ...text, bookingId: data?.id, status: newStatus }));
+      }
       break;
-    case 'booking.cancelled':
+    }
+    case 'booking.cancelled': {
       yield put(mercureBookingCancelled(data));
+      const text = getBookingNotificationText('CANCELLED', data?.photographer?.username);
+      yield put(addNotification({ type: 'booking.cancelled', ...text, bookingId: data?.id, status: 'CANCELLED' }));
       break;
+    }
     case 'photographer.updated':
     case 'photographer.created':
     case 'photographer.deleted':
@@ -78,9 +92,7 @@ function* handleMercureMessage(message: MercureMessage): Generator<any, void, an
       yield put(mercureProfileUpdated(data));
       break;
     default:
-      if (__DEV__) {
-        console.log('[Mercure Saga] Unhandled event:', event, data);
-      }
+      if (__DEV__) console.log('[Mercure Saga] Unhandled event:', event, data);
   }
 }
 

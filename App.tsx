@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import store from './src/app/store';
 import Nav from './src/navigations';
 import {AuthProvider} from './src/contexts/AuthContext';
+import InAppBanner from './src/components/InAppBanner';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <AuthProvider>
         <View className='flex-1'>
           <Nav />
+          <InAppBanner />
         </View>
       </AuthProvider>
     </Provider>

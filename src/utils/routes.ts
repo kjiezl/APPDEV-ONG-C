@@ -8,4 +8,5 @@ export default {
     BOOKINGS: 'Bookings',
     BOOKING_DETAIL: 'BookingDetail',
     CREATE_BOOKING: 'CreateBooking',
+    NOTIFICATIONS: 'Notifications',
 } as const;

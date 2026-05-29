@@ -12,6 +12,7 @@ import PhotographerDetailScreen from '../screens/main/PhotographerDetailScreen';
 import BookingsScreen from '../screens/main/BookingsScreen';
 import BookingDetailScreen from '../screens/main/BookingDetailScreen';
 import CreateBookingScreen from '../screens/main/CreateBookingScreen';
+import NotificationsScreen from '../screens/main/NotificationsScreen';
 
 import { ROUTES } from '../utils';
 
@@ -27,6 +28,7 @@ const AuthNav: React.FC = () => {
       <Stack.Screen name={ROUTES.BOOKINGS} component={BookingsScreen} options={{ headerShown: false }} />
       <Stack.Screen name={ROUTES.BOOKING_DETAIL} component={BookingDetailScreen} options={{ headerShown: false }} />
       <Stack.Screen name={ROUTES.CREATE_BOOKING} component={CreateBookingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={ROUTES.NOTIFICATIONS} component={NotificationsScreen} options={{ title: 'Notifications' }} />
     </Stack.Navigator>
   );
 };
